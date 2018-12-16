@@ -13,7 +13,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var effectView: UIVisualEffectView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
-    let first = Array(repeating: "First", count: 10)
+    let first = Array(repeating: "First", count: 20)
     let second = Array(repeating: "Second", count: 20)
     let third = Array(repeating: "Third", count: 30)
     let fourth = Array(repeating: "Fourth", count: 40)
@@ -26,8 +26,10 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         case fourth
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        tableViewHeightConstraint.constant = tableView.contentSize.height
     }
 
     @IBAction func segmentAction(_ sender: UISegmentedControl) {
