@@ -7,70 +7,69 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
+import NSObject_Rx
 
-class ViewController: UIViewController, UIScrollViewDelegate {
+class ViewController: UIViewController {
+    
+    var models = ["a", "b", "c"]
+    private let selectedIndex: BehaviorRelay<Int> = .init(value: 0)
 
-    @IBOutlet weak var effectView: UIVisualEffectView!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
-    let first = Array(repeating: "First", count: 20)
-    let second = Array(repeating: "Second", count: 20)
-    let third = Array(repeating: "Third", count: 30)
-    let fourth = Array(repeating: "Fourth", count: 40)
-    var state = State.first
-    
-    enum State: Int {
-        case first
-        case second
-        case third
-        case fourth
-    }
-    
+    @IBOutlet private weak var tabWrapperView: UIStackView!
+    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var tableViewHeightConstraint: NSLayoutConstraint!
+        
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        tableViewHeightConstraint.constant = tableView.contentSize.height
-    }
-
-    @IBAction func segmentAction(_ sender: UISegmentedControl) {
-        state = State(rawValue: sender.selectedSegmentIndex) ?? .first
-        tableView.reloadData()
-        tableViewHeightConstraint.constant = tableView.contentSize.height
+        updateConstraints()
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offset = scrollView.contentOffset.y
-        effectView.alpha = offset > 0 ? min(0.8, max(0, (offset-100)/50)) : min(0.8, max(0, -offset/80))
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        models.enumerated().forEach { index, txt in
+            let btn = UIButton()
+            btn.tag = index
+            btn.setTitle(txt, for: UIControl.State())
+            btn.setTitleColor(.black, for: UIControl.State())
+            btn.rx.tap
+                .withLatestFrom(Observable.just(index))
+                .bind(to: selectedIndex)
+                .disposed(by: rx.disposeBag)
+            
+            tabWrapperView.addArrangedSubview(btn)
+        }
+        
+        selectedIndex
+            .subscribe(onNext: { [weak self] index in
+                guard let self = self else { return }
+                
+                // todo underbar
+                self.tabWrapperView.subviews.forEach { $0.backgroundColor = .white }
+                self.tabWrapperView.subviews[index].backgroundColor = .lightGray
+                
+                // update view
+                self.tableView.reloadData()
+                self.updateConstraints()
+            })
+            .disposed(by: rx.disposeBag)
     }
     
+    private func updateConstraints() {
+        tableViewHeightConstraint.constant = tableView.contentSize.height
+    }
 }
 
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch state {
-        case .first:
-            return first.count
-        case .second:
-            return second.count
-        case .third:
-            return third.count
-        case .fourth:
-            return fourth.count
-        }
+        return 100
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        switch state {
-        case .first:
-            cell.textLabel?.text = first[indexPath.item]
-        case .second:
-            cell.textLabel?.text = second[indexPath.item]
-        case .third:
-            cell.textLabel?.text = third[indexPath.item]
-        case .fourth:
-            cell.textLabel?.text = fourth[indexPath.item]
-        }
+        cell.textLabel?.text = "\(indexPath.item)"
         return cell
     }
     
