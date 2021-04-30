@@ -6,4 +6,4 @@
 
 参考にしたもの
 
-[Qiita](https://qiita.com/azuma317/items/b3904cb704e13741c169)
+[Github](https://github.com/azuma317/TwitterProfileAutoLayout)
