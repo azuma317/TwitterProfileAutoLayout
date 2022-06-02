@@ -15,10 +15,6 @@
 		8401D0F82458806B00F740B1 /* ContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8401D0F72458806B00F740B1 /* ContentView.xib */; };
 		8401D0FA245888F700F740B1 /* ChildViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8401D0F9245888F700F740B1 /* ChildViewController.swift */; };
 		8401D1032458B53900F740B1 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8401D1022458B53900F740B1 /* UIView+Extensions.swift */; };
-		84F80C0E2458483D00BEF56C /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F80C0D2458483D00BEF56C /* RxCocoa.framework */; };
-		84F80C122458484900BEF56C /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F80C112458484900BEF56C /* RxSwift.framework */; };
-		84F80C152458485800BEF56C /* NSObject_Rx.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F80C142458485800BEF56C /* NSObject_Rx.framework */; };
-		84F80C182458486600BEF56C /* RxRelay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F80C172458486600BEF56C /* RxRelay.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,10 +39,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84F80C182458486600BEF56C /* RxRelay.framework in Frameworks */,
-				84F80C122458484900BEF56C /* RxSwift.framework in Frameworks */,
-				84F80C152458485800BEF56C /* NSObject_Rx.framework in Frameworks */,
-				84F80C0E2458483D00BEF56C /* RxCocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,7 +147,6 @@
 				75569CE021C227C5005105CA /* Sources */,
 				75569CE121C227C5005105CA /* Frameworks */,
 				75569CE221C227C5005105CA /* Resources */,
-				84F80C1A245849EE00BEF56C /* Carthage */,
 			);
 			buildRules = (
 			);
@@ -212,35 +203,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		84F80C1A245849EE00BEF56C /* Carthage */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/RxRelay.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/RxCocoa.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/NSObject_Rx.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/RxSwift.framework",
-			);
-			name = Carthage;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RxSwift.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RxCocoa.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/NSObject_Rx.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RxRelay.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "carthage copy-frameworks\n\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		75569CE021C227C5005105CA /* Sources */ = {

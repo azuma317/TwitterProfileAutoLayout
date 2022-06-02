@@ -7,44 +7,55 @@
 //
 
 import UIKit
-import RxSwift
-import RxCocoa
 
 // MARK: - Controller
 
 final class ChildViewController: UIViewController {
     
-    private let viewModel: Int
+    private let index: Int
+    private let models = Array(0...20)
     
     lazy var tableView: UITableView = {
         let table = UITableView()
+        table.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
         table.rowHeight = 100
         table.isScrollEnabled = false
-        
-        Observable
-            .just(["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""])
-            .bind(to: table.rx.items) { table, row, element in
-                let cell = UITableViewCell()
-                cell.textLabel?.text = "\(self.viewModel) cell"
-                return cell
-            }
-            .disposed(by:rx.disposeBag)
-        
+        table.dataSource = self
         return table
     }()
     
-    init(viewModel: Int) {
-        self.viewModel = viewModel
+    init(index: Int) {
+        self.index = index
         super.init(nibName: nil, bundle: nil)
     }
     
     required convenience init?(coder: NSCoder) {
-        self.init(viewModel: 0)
+        self.init(index: 0)
     }
     
     override func loadView() {
         super.loadView()
         
         view = tableView
+    }
+}
+
+extension ChildViewController: UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
+
+        models.count
+    }
+
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: "UITableViewCell",
+            for: indexPath
+        )
+        cell.textLabel?.text = "\(models[indexPath.row])"
+        return cell
     }
 }
