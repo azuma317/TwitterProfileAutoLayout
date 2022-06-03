@@ -11,9 +11,18 @@ import UIKit
 // MARK: - Controller
 
 final class ChildViewController: UIViewController {
+
     
     private let index: Int
-    private let models = Array(0...20)
+    private var models: [Int] {
+        // 高さの違うテストををしたいので、指定した数のモデルを用意する
+        switch index {
+        case 0: return Array(0...20)
+        case 1: return Array(0...15)
+        case 2: return Array(0...30)
+        default: return Array(0...10)
+        }
+    }
     
     lazy var tableView: UITableView = {
         let table = UITableView()
@@ -37,6 +46,7 @@ final class ChildViewController: UIViewController {
         super.loadView()
         
         view = tableView
+        tableView.reloadData()
     }
 }
 

@@ -12,6 +12,7 @@ final class ContentViewController: UIViewController {
     
     var models = ["a", "b", "c"]
     var currentIndex = 0
+    var pointCache = [Int: IndexPath]()
     private let contentView: ContentView = .instantiate()
     
     override func loadView() {
@@ -41,7 +42,6 @@ private extension ContentViewController {
     
     func initialize() {
         view = contentView
-
         addChild(contentView.pageViewController)
         contentView.pageViewController.didMove(toParent: self)
         setController(by: 0)
@@ -54,26 +54,28 @@ private extension ContentViewController {
             btn.setTitle(txt, for: UIControl.State())
             btn.setTitleColor(.black, for: UIControl.State())
             btn.addTarget(self, action: #selector(didTapTab), for: .touchUpInside)
-
             contentView.tabWrapperView.addArrangedSubview(btn)
             
             let vc = ChildViewController(index: index)
             vc.tableView.delegate = self
-            contentView.controllers.append(vc)
+            vc.tableView.reloadData()
+            contentView.children.append(vc)
         }
     }
-    
-    func setConstraints(by index: Int) {
-        contentView.containerHeight.constant
-            = (contentView.controllers[index].view as? UITableView)?.contentSize.height ?? 0
-        view.layoutIfNeeded()
-    }
-    
+
     func setController(by index: Int) {
-        
-        
-        // todo calculate direction
-        contentView.pageViewController.setViewControllers([contentView.controllers[index]], direction: .forward, animated: true)
+        contentView.pageViewController.setViewControllers(
+            [contentView.children[index]],
+            direction: .forward, // todo calculate direction
+            animated: true
+        )
+    }
+
+    func setConstraints(by index: Int) {
+        let table = contentView.children[index].view as? UITableView
+        let height = table?.contentSize.height ?? 0
+        view.layoutIfNeeded()
+        contentView.containerHeight.constant = height
     }
 
     @objc func didTapTab(_ button: UIButton) {

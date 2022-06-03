@@ -13,7 +13,7 @@ final class ContentView: UIView {
     
     // MARK: Properties
     
-    var controllers = [UIViewController]()
+    var children = [UIViewController]()
     
     lazy var pageViewController = UIPageViewController(
         transitionStyle: .scroll,
